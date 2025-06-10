@@ -6,7 +6,9 @@ import {
   Text,
   ListItem,
   UnorderedList,
+  Button,
 } from "@chakra-ui/react";
+import { Link } from "react-router-dom";
 
 export const EventsPage = () => {
   const [events, setEvents] = useState([]);
@@ -32,6 +34,7 @@ export const EventsPage = () => {
   return (
     <Box>
       <Heading>List of events</Heading>
+      <Button>Add Event</Button>
       <UnorderedList>
         {events.map((event) => {
           const start = new Date(event.startTime).toLocaleString();
@@ -44,9 +47,11 @@ export const EventsPage = () => {
 
           return (
             <ListItem key={event.id} p="5">
-              <Text as="b" fontSize="xl">
-                {event.title}
-              </Text>
+              <Link to={`/event/${event.id}`}>
+                <Text as="b" fontSize="xl">
+                  {event.title}
+                </Text>
+              </Link>
               <Text fontSize="sm">{event.description}</Text>
               <Image
                 src={event.image}
