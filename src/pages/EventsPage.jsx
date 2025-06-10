@@ -1,5 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { Heading, Box } from "@chakra-ui/react";
+import {
+  Heading,
+  Box,
+  Image,
+  Text,
+  List,
+  ListItem,
+  ListIcon,
+  OrderedList,
+  UnorderedList,
+} from "@chakra-ui/react";
 
 export const EventsPage = () => {
   const [events, setEvents] = useState([]);
@@ -17,11 +27,26 @@ export const EventsPage = () => {
   return (
     <Box>
       <Heading>List of events</Heading>
-      <ul>
+      <UnorderedList>
         {events.map((event) => {
-          return <li key={event.id}>- {event.title}</li>;
+          return (
+            <ListItem key={event.id} p="5">
+              <Text as="b" fontSize="xl">
+                {event.title}
+              </Text>
+              <Text fontSize="sm">{event.description}</Text>
+              <Image
+                src={event.image}
+                alt={event.description}
+                boxSize="xs"
+                objectFit="cover"
+                borderRadius="20"
+                p="2"
+              />
+            </ListItem>
+          );
         })}
-      </ul>
+      </UnorderedList>
     </Box>
   );
 };
