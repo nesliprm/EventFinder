@@ -7,12 +7,22 @@ import {
   ListItem,
   UnorderedList,
   Button,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  useDisclosure,
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
+import { AddEventForm } from "./AddEventForm";
 
 export const EventsPage = () => {
   const [events, setEvents] = useState([]);
   const [categories, setCategories] = useState([]);
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   useEffect(() => {
     async function fetchEvents() {
@@ -34,7 +44,22 @@ export const EventsPage = () => {
   return (
     <Box>
       <Heading>List of events</Heading>
-      <Button>Add Event</Button>
+
+      <Button onClick={onOpen}>Add Event</Button>
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Add a new event:</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <AddEventForm onClose={onClose} />
+          </ModalBody>
+          <ModalFooter>
+            {/* <Button onClick={onClose}>Close</Button> */}
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+
       <UnorderedList>
         {events.map((event) => {
           const start = new Date(event.startTime).toLocaleString();
