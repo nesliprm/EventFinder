@@ -4,6 +4,7 @@ import {
   Box,
   Image,
   Text,
+  Input,
   ListItem,
   UnorderedList,
   Button,
@@ -11,10 +12,11 @@ import {
   ModalOverlay,
   ModalContent,
   ModalHeader,
-  ModalFooter,
   ModalBody,
   ModalCloseButton,
   useDisclosure,
+  HStack,
+  Select,
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import { AddEventForm } from "./AddEventForm";
@@ -44,19 +46,34 @@ export const EventsPage = () => {
   return (
     <Box>
       <Heading>List of events</Heading>
+      <HStack width="30%">
+        <Input placeholder="Enter a keyword"></Input>
+        <Button>Search</Button>
+      </HStack>
+      <HStack width="30%">
+        <Select placeholder="Select category">
+          {categories.map((category) => (
+            <option key={category.id} value={category.id}>
+              {category.name}
+            </option>
+          ))}
+        </Select>
+        <Button>Search</Button>
+      </HStack>
 
-      <Button onClick={onOpen}>Add Event</Button>
+      <Button onClick={onOpen}>Add a new event</Button>
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Add a new event:</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <AddEventForm onClose={onClose} />
+            <AddEventForm
+              onAdd={(newEvent) => setEvents((prev) => [...prev, newEvent])}
+              onClose={onClose}
+              categories={categories}
+            />
           </ModalBody>
-          <ModalFooter>
-            {/* <Button onClick={onClose}>Close</Button> */}
-          </ModalFooter>
         </ModalContent>
       </Modal>
 
@@ -78,14 +95,17 @@ export const EventsPage = () => {
                 </Text>
               </Link>
               <Text fontSize="sm">{event.description}</Text>
-              <Image
-                src={event.image}
-                alt={event.description}
-                boxSize="xs"
-                objectFit="cover"
-                borderRadius="20"
-                p="2"
-              />
+              {event.image ? (
+                <Image
+                  src={event.image}
+                  alt={event.description}
+                  boxSize="xs"
+                  objectFit="cover"
+                  borderRadius="20"
+                  p="2"
+                />
+              ) : null}
+
               <Text fontSize="sm">Starts: {start}</Text>
               <Text fontSize="sm">Ends: {end}</Text>
               <Text fontSize="sm">Categories: {categoryNames.join(", ")}</Text>
