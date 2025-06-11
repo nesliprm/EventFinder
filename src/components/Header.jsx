@@ -1,9 +1,21 @@
-import { Heading } from "@chakra-ui/react";
+import { Heading, Box } from "@chakra-ui/react";
+import heroImage from "../assets/heroimage01.jpg";
 
 export const Header = () => {
   return (
-    <Heading m="20" fontSize="6xl">
-      EventFinder
-    </Heading>
+    <Box
+      bgImage={heroImage}
+      bgSize="cover"
+      bgPosition="center"
+      bgRepeat="no-repeat"
+      h="300px"
+      display="flex"
+      alignItems="center"
+      justifyContent="center"
+      color="white"
+      textAlign="center"
+    >
+      <Heading fontSize="6xl">EventFinder</Heading>
+    </Box>
   );
 };
