@@ -60,25 +60,30 @@ export const EventsPage = () => {
 
   return (
     <Box maxW="container.lg" mx="auto" p={4}>
-      <Heading fontSize="3xl">Upcoming Events</Heading>
-
-      <HStack width="30%">
-        <Select
-          placeholder="filter by category"
-          value={selectedCategory}
-          onChange={(e) => setSelectedCategory(e.target.value)}
-        >
-          <option value="showAll">show all</option>
-          {categories.map((category) => (
-            <option key={category.id} value={category.id}>
-              {category.name}
-            </option>
-          ))}
-          <option value="uncategorized">uncategorized</option>
-        </Select>
+      <Heading my="10" fontSize="5xl">
+        Upcoming Events
+      </Heading>
+      <HStack>
+        {" "}
+        <Box width="30%">
+          <Select
+            placeholder="filter by category"
+            value={selectedCategory}
+            onChange={(e) => setSelectedCategory(e.target.value)}
+          >
+            <option value="showAll">show all</option>
+            {categories.map((category) => (
+              <option key={category.id} value={category.id}>
+                {category.name}
+              </option>
+            ))}
+            <option value="uncategorized">uncategorized</option>
+          </Select>
+        </Box>
+        <Text as="b">OR</Text>
+        <Button onClick={onOpen}>Add a new event</Button>
       </HStack>
 
-      <Button onClick={onOpen}>Add a new event</Button>
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
@@ -113,11 +118,17 @@ export const EventsPage = () => {
               direction={{ base: "column", sm: "row" }}
               overflow="hidden"
               variant="outline"
+              borderRadius="20"
+              _hover={{
+                boxShadow: "md",
+                transform: "translate(-1px)",
+                transition: "all 0.1s ease-in-out",
+              }}
             >
               <Stack
                 display="flex"
                 irection="column"
-                p={4}
+                p={6}
                 flex="1"
                 justify="space-between"
               >

@@ -1,5 +1,5 @@
 import { Heading, Box } from "@chakra-ui/react";
-import heroImage from "../assets/heroimage01.jpg";
+import heroImage from "../assets/heroimage01b.jpg";
 
 export const Header = () => {
   return (
@@ -15,7 +15,9 @@ export const Header = () => {
       color="white"
       textAlign="center"
     >
-      <Heading fontSize="6xl">EventFinder</Heading>
+      <Heading fontFamily="Monoton" fontWeight="normal" fontSize="8xl">
+        EventFinder
+      </Heading>
     </Box>
   );
 };
