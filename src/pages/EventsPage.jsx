@@ -4,8 +4,7 @@ import {
   Box,
   Image,
   Text,
-  ListItem,
-  List,
+  Card,
   Button,
   Modal,
   ModalOverlay,
@@ -16,6 +15,7 @@ import {
   useDisclosure,
   HStack,
   Select,
+  Stack,
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import { AddEventForm } from "./AddEventForm";
@@ -97,7 +97,7 @@ export const EventsPage = () => {
         </ModalContent>
       </Modal>
 
-      <List styleType="none">
+      <Box my={10} display="grid" gap={6}>
         {filteredEvents.map((event) => {
           const start = new Date(event.startTime).toLocaleString();
           const end = new Date(event.endTime).toLocaleString();
@@ -108,31 +108,51 @@ export const EventsPage = () => {
           });
 
           return (
-            <ListItem key={event.id} p="5">
-              <Link to={`/event/${event.id}`}>
-                <Text as="b" fontSize="xl">
-                  {event.title}
-                </Text>
-              </Link>
-              <Text fontSize="sm">{event.description}</Text>
+            <Card
+              key={event.id}
+              direction={{ base: "column", sm: "row" }}
+              overflow="hidden"
+              variant="outline"
+            >
+              <Stack
+                display="flex"
+                irection="column"
+                p={4}
+                flex="1"
+                justify="space-between"
+              >
+                <Box>
+                  <Link to={`/event/${event.id}`}>
+                    <Heading as="b" fontSize="3xl">
+                      {event.title}
+                    </Heading>
+                  </Link>
+                  <Text py="2" fontSize="md">
+                    {event.description}
+                  </Text>
+                </Box>
+                <Box>
+                  <Text fontSize="sm">Starts: {start}</Text>
+                  <Text fontSize="sm">Ends: {end}</Text>
+                  <Text fontSize="sm">
+                    Categories: {categoryNames.join(", ")}
+                  </Text>
+                </Box>
+              </Stack>
+
               {event.image ? (
                 <Image
                   src={event.image}
                   alt={event.description}
                   boxSize="xs"
                   objectFit="cover"
-                  borderRadius="20"
-                  p="2"
+                  alignSelf="stretch"
                 />
               ) : null}
-
-              <Text fontSize="sm">Starts: {start}</Text>
-              <Text fontSize="sm">Ends: {end}</Text>
-              <Text fontSize="sm">Categories: {categoryNames.join(", ")}</Text>
-            </ListItem>
+            </Card>
           );
         })}
-      </List>
+      </Box>
     </Box>
   );
 };
