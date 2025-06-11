@@ -44,28 +44,28 @@ export const AddEventForm = ({ event, onClose, categories, onSubmit }) => {
           onChange={(e) => setTitle(e.target.value)}
           required
         />
-        <FormLabel>Description</FormLabel>
+        <FormLabel mt={3}>Description</FormLabel>
         <Input
           type="text"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
           required
         />
-        <FormLabel>Starts</FormLabel>
+        <FormLabel mt={3}>Starts</FormLabel>
         <Input
           type="text"
           value={startTime}
           onChange={(e) => setStartTime(e.target.value)}
           required
         />
-        <FormLabel>Ends</FormLabel>
+        <FormLabel mt={3}>Ends</FormLabel>
         <Input
           type="text"
           value={endTime}
           onChange={(e) => setEndTime(e.target.value)}
           required
         />
-        <FormLabel>Category</FormLabel>
+        <FormLabel mt={3}>Category</FormLabel>
         <Select
           value={categoryIds}
           onChange={(e) => setCategoryIds([Number(e.target.value)])}
@@ -76,7 +76,9 @@ export const AddEventForm = ({ event, onClose, categories, onSubmit }) => {
             </option>
           ))}
         </Select>
-        <Button type="submit">Submit</Button>
+        <Button type="submit" my={5}>
+          Submit
+        </Button>
       </FormControl>
     </form>
   );

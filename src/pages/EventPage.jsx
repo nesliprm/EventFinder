@@ -3,6 +3,7 @@ import { useParams, useNavigate, Link } from "react-router-dom";
 import {
   Box,
   Heading,
+  Center,
   Image,
   Text,
   Button,
@@ -192,7 +193,9 @@ export const EventPage = () => {
               />
             </HStack>
           ) : (
-            "Unknown creator"
+            <Text fontSize="sm" fontStyle="italic">
+              Creator unknown
+            </Text>
           )}
 
           <Box role="time-group">
@@ -218,10 +221,7 @@ export const EventPage = () => {
               ornare ex at orci dapibus lacinia. Aenean nec lacinia est, at
               rhoncus lorem. Vestibulum et sapien pellentesque, eleifend tortor
               ac, aliquet urna. Nullam pellentesque suscipit posuere. Etiam
-              posuere eleifend lorem auctor pretium. Proin vitae lectus velit.
-              Aenean mattis suscipit turpis in facilisis. Duis nisi orci,
-              tincidunt eget augue at, lobortis pulvinar dui. Mauris facilisis
-              volutpat vestibulum.
+              posuere eleifend lorem auctor pretium.
             </Text>
           </Box>
 
@@ -236,6 +236,7 @@ export const EventPage = () => {
             objectFit="cover"
             borderRadius="20"
             p="2"
+            maxH={{ base: "300px", sm: "100%" }}
           />
         ) : (
           <Image
@@ -245,12 +246,15 @@ export const EventPage = () => {
             objectFit="cover"
             borderRadius="20"
             p="2"
+            maxH={{ base: "300px", sm: "100%" }}
           />
         )}
       </Card>
-      <Box fontSize="sm" color="gray.500">
-        <Link to="/">↰ Back to events list</Link>
-      </Box>
+      <Center my={10}>
+        <Button size="sm">
+          <Link to="/">↰ Back to events list</Link>
+        </Button>
+      </Center>
     </Box>
   );
 };

@@ -21,6 +21,7 @@ import { Link } from "react-router-dom";
 import { AddEventForm } from "./AddEventForm";
 import { useSearch } from "./SearchContext";
 import mockImage from "../assets/mockeventimage.jpg";
+import { ScrollTopButton } from "../components/ScrollTopButton";
 
 export const EventsPage = () => {
   const [events, setEvents] = useState([]);
@@ -189,6 +190,7 @@ export const EventsPage = () => {
           );
         })}
       </Box>
+      <ScrollTopButton />
     </Box>
   );
 };
