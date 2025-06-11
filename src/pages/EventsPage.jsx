@@ -86,7 +86,7 @@ export const EventsPage = () => {
           <ModalCloseButton />
           <ModalBody>
             <AddEventForm
-              onAdd={(newEvent) => {
+              onSubmit={(newEvent) => {
                 setEvents((prev) => [...prev, newEvent]);
                 setSelectedCategory("");
               }}

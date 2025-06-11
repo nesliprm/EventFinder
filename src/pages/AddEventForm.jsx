@@ -7,7 +7,7 @@ import {
 } from "@chakra-ui/react";
 import { useState } from "react";
 
-export const AddEventForm = ({ onClose, categories, onAdd }) => {
+export const AddEventForm = ({ event, onClose, categories, onSubmit }) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [startTime, setStartTime] = useState("");
@@ -23,7 +23,7 @@ export const AddEventForm = ({ onClose, categories, onAdd }) => {
       body: JSON.stringify(data),
     });
     const newEvent = await response.json();
-    onAdd(newEvent);
+    onSubmit(newEvent);
     onClose();
   };
 
