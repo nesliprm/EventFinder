@@ -4,7 +4,6 @@ import {
   Box,
   Image,
   Text,
-  Input,
   ListItem,
   UnorderedList,
   Button,
@@ -45,11 +44,8 @@ export const EventsPage = () => {
 
   return (
     <Box>
-      <Heading>List of events</Heading>
-      <HStack width="30%">
-        <Input placeholder="Enter a keyword"></Input>
-        <Button>Search</Button>
-      </HStack>
+      <Heading fontSize="3xl">Upcoming Events</Heading>
+
       <HStack width="30%">
         <Select placeholder="Select category">
           {categories.map((category) => (
