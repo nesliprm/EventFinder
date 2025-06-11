@@ -9,8 +9,11 @@ import {
 } from "@chakra-ui/react";
 
 import { SearchIcon } from "@chakra-ui/icons";
+import { useSearch } from "../pages/SearchContext";
 
 export const Navigation = () => {
+  const { searchTerm, setSearchTerm } = useSearch();
+
   return (
     <Box
       as="nav"
@@ -28,7 +31,11 @@ export const Navigation = () => {
 
       <HStack className="search-box">
         <InputGroup>
-          <Input placeholder="Search for events"></Input>
+          <Input
+            placeholder="Search for events"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          ></Input>
           <InputRightElement>
             <SearchIcon color="gray.400" />
           </InputRightElement>

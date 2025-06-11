@@ -5,7 +5,7 @@ import {
   Image,
   Text,
   ListItem,
-  UnorderedList,
+  List,
   Button,
   Modal,
   ModalOverlay,
@@ -19,11 +19,27 @@ import {
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import { AddEventForm } from "./AddEventForm";
+import { useSearch } from "./SearchContext";
 
 export const EventsPage = () => {
   const [events, setEvents] = useState([]);
   const [categories, setCategories] = useState([]);
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const { searchTerm } = useSearch();
+
+  const filteredEvents = events
+    .filter((event) =>
+      selectedCategory === "uncategorized"
+        ? event.categoryIds.length === 0
+        : selectedCategory === "showAll" || selectedCategory === ""
+        ? true
+        : event.categoryIds.includes(Number(selectedCategory))
+    )
+
+    .filter((event) =>
+      event.title.toLowerCase().includes(searchTerm.toLowerCase())
+    );
 
   useEffect(() => {
     async function fetchEvents() {
@@ -47,14 +63,19 @@ export const EventsPage = () => {
       <Heading fontSize="3xl">Upcoming Events</Heading>
 
       <HStack width="30%">
-        <Select placeholder="Select category">
+        <Select
+          placeholder="filter by category"
+          value={selectedCategory}
+          onChange={(e) => setSelectedCategory(e.target.value)}
+        >
+          <option value="showAll">show all</option>
           {categories.map((category) => (
             <option key={category.id} value={category.id}>
               {category.name}
             </option>
           ))}
+          <option value="uncategorized">uncategorized</option>
         </Select>
-        <Button>Search</Button>
       </HStack>
 
       <Button onClick={onOpen}>Add a new event</Button>
@@ -65,7 +86,10 @@ export const EventsPage = () => {
           <ModalCloseButton />
           <ModalBody>
             <AddEventForm
-              onAdd={(newEvent) => setEvents((prev) => [...prev, newEvent])}
+              onAdd={(newEvent) => {
+                setEvents((prev) => [...prev, newEvent]);
+                setSelectedCategory("");
+              }}
               onClose={onClose}
               categories={categories}
             />
@@ -73,8 +97,8 @@ export const EventsPage = () => {
         </ModalContent>
       </Modal>
 
-      <UnorderedList>
-        {events.map((event) => {
+      <List styleType="none">
+        {filteredEvents.map((event) => {
           const start = new Date(event.startTime).toLocaleString();
           const end = new Date(event.endTime).toLocaleString();
 
@@ -108,7 +132,7 @@ export const EventsPage = () => {
             </ListItem>
           );
         })}
-      </UnorderedList>
+      </List>
     </Box>
   );
 };
