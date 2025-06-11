@@ -23,6 +23,7 @@ import {
   AlertDialogFooter,
 } from "@chakra-ui/react";
 import { AddEventForm } from "./AddEventForm";
+import mockImage from "../assets/mockeventimage.jpg";
 
 export const EventPage = () => {
   const { eventId } = useParams();
@@ -115,9 +116,18 @@ export const EventPage = () => {
         "Unknown creator"
       )}
 
-      {event.image && (
+      {event.image ? (
         <Image
           src={event.image}
+          alt={event.description}
+          boxSize="md"
+          objectFit="cover"
+          borderRadius="20"
+          p="2"
+        />
+      ) : (
+        <Image
+          src={mockImage}
           alt={event.description}
           boxSize="md"
           objectFit="cover"

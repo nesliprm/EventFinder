@@ -20,6 +20,7 @@ import {
 import { Link } from "react-router-dom";
 import { AddEventForm } from "./AddEventForm";
 import { useSearch } from "./SearchContext";
+import mockImage from "../assets/mockeventimage.jpg";
 
 export const EventsPage = () => {
   const [events, setEvents] = useState([]);
@@ -159,7 +160,15 @@ export const EventsPage = () => {
                   objectFit="cover"
                   alignSelf="stretch"
                 />
-              ) : null}
+              ) : (
+                <Image
+                  src={mockImage}
+                  alt={event.description}
+                  boxSize="xs"
+                  objectFit="cover"
+                  alignSelf="stretch"
+                />
+              )}
             </Card>
           );
         })}
