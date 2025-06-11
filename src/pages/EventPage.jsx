@@ -103,8 +103,16 @@ export const EventPage = () => {
 
   return (
     <Box maxW="container.lg" mx="auto" p={4}>
-      <HStack gap={2} my={10}>
-        <Heading fontSize="5xl">Event: {event.title}</Heading>
+      <Stack
+        direction={{ base: "column", md: "row" }}
+        spacing={4}
+        my={{ base: 5, md: 10 }}
+        align={{ base: "flex-start", md: "center" }}
+        justify="space-between"
+      >
+        <Heading fontSize={{ base: "3xl", md: "5xl" }}>
+          Event: {event.title}
+        </Heading>
         <Box role="buttons-group">
           <Button onClick={onEditOpen} size="xs" m="1">
             Edit
@@ -156,9 +164,10 @@ export const EventPage = () => {
             </AlertDialogContent>
           </AlertDialog>
         </Box>
-      </HStack>
+      </Stack>
       <Card
         variant="unstyled"
+        gap={4}
         direction={{ base: "column", sm: "row" }}
         overflow="hidden"
       >
@@ -170,7 +179,7 @@ export const EventPage = () => {
         >
           {creator?.name ? (
             <HStack align="center">
-              <Text>
+              <Text fontSize={{ base: "xs", md: "md" }}>
                 Created by <Text as="b">{creator.name}</Text>
               </Text>
 

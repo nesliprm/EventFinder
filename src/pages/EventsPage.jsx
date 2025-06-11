@@ -61,12 +61,16 @@ export const EventsPage = () => {
 
   return (
     <Box maxW="container.lg" mx="auto" p={4}>
-      <Heading my="10" fontSize="5xl">
+      <Heading
+        my="10"
+        textAlign={{ base: "center", md: "left" }}
+        fontSize={{ base: "4xl", md: "5xl" }}
+      >
         Upcoming Events
       </Heading>
       <HStack>
         {" "}
-        <Box width="30%">
+        <Box width={{ base: "100%", md: "30%" }}>
           <Select
             placeholder="filter by category"
             value={selectedCategory}
@@ -82,7 +86,9 @@ export const EventsPage = () => {
           </Select>
         </Box>
         <Text as="b">OR</Text>
-        <Button onClick={onOpen}>Add a new event</Button>
+        <Button onClick={onOpen} w={{ base: "100%", md: "auto" }}>
+          Add a new event
+        </Button>
       </HStack>
 
       <Modal isOpen={isOpen} onClose={onClose}>
@@ -162,7 +168,9 @@ export const EventsPage = () => {
                 <Image
                   src={event.image}
                   alt={event.description}
-                  boxSize="xs"
+                  w={{ base: "100%", sm: "xs" }}
+                  maxH={{ base: "200px", sm: "100%" }}
+                  boxSize={{ sm: "xs" }}
                   objectFit="cover"
                   alignSelf="stretch"
                 />
@@ -170,7 +178,9 @@ export const EventsPage = () => {
                 <Image
                   src={mockImage}
                   alt={event.description}
-                  boxSize="xs"
+                  w={{ base: "100%", sm: "xs" }}
+                  maxH={{ base: "200px", sm: "100%" }}
+                  boxSize={{ sm: "xs" }}
                   objectFit="cover"
                   alignSelf="stretch"
                 />
