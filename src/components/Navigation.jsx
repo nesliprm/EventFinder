@@ -24,12 +24,12 @@ export const Navigation = () => {
       justifyContent="space-between"
       alignItems="center"
     >
-      <HStack className="nav-links">
-        <Link to="/">Events</Link>
-        <Link to="/event/1">Event</Link>
+      <HStack className="nav-links" mx="5">
+        <Link to="/">Home</Link>
+        <Link to="/">Contact</Link>
       </HStack>
 
-      <HStack className="search-box">
+      <HStack className="search-box" mx="5">
         <InputGroup>
           <Input
             placeholder="Search for events"
