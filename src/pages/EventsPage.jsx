@@ -59,7 +59,7 @@ export const EventsPage = () => {
   }, []);
 
   return (
-    <Box>
+    <Box maxW="container.lg" mx="auto" p={4}>
       <Heading fontSize="3xl">Upcoming Events</Heading>
 
       <HStack width="30%">
