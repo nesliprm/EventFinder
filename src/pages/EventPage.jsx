@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import {
   Box,
   Heading,
@@ -14,6 +14,13 @@ import {
   ModalCloseButton,
   useDisclosure,
   useToast,
+  AlertDialog,
+  AlertDialogContent,
+  AlertDialogOverlay,
+  AlertDialogHeader,
+  AlertDialogCloseButton,
+  AlertDialogBody,
+  AlertDialogFooter,
 } from "@chakra-ui/react";
 import { AddEventForm } from "./AddEventForm";
 
@@ -22,8 +29,21 @@ export const EventPage = () => {
   const [event, setEvent] = useState(null);
   const [creator, setCreator] = useState(null);
   const [categories, setCategories] = useState([]);
-  const { isOpen, onClose, onOpen } = useDisclosure();
+  const {
+    isOpen: isEditOpen,
+    onOpen: onEditOpen,
+    onClose: onEditClose,
+  } = useDisclosure();
+
+  const {
+    isOpen: isDeleteOpen,
+    onOpen: onDeleteOpen,
+    onClose: onDeleteClose,
+  } = useDisclosure();
+
   const toast = useToast();
+  const cancelRef = React.useRef();
+  const navigate = useNavigate();
 
   useEffect(() => {
     async function loadEvent() {
@@ -60,6 +80,22 @@ export const EventPage = () => {
     const match = categories.find((category) => category.id === id);
     return match?.name ?? "Uncategorized";
   });
+
+  const handleDelete = async (e) => {
+    e.preventDefault();
+
+    const response = await fetch(`http://localhost:3000/events/${event.id}`, {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+    });
+    if (response.ok) {
+      toast({ title: "Event deleted.", status: "success" });
+      onDeleteClose();
+      navigate("/");
+    } else {
+      toast({ title: "Action failed.", status: "error" });
+    }
+  };
 
   return (
     <Box>
@@ -102,10 +138,10 @@ export const EventPage = () => {
         </Text>
       ))}
 
-      <Button onClick={onOpen} size="sm" m="1">
+      <Button onClick={onEditOpen} size="sm" m="1">
         Edit
       </Button>
-      <Modal isOpen={isOpen} onClose={onClose}>
+      <Modal isOpen={isEditOpen} onClose={onEditClose} isCentered>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Edit event:</ModalHeader>
@@ -117,15 +153,40 @@ export const EventPage = () => {
                 setEvent(updatedEvent);
                 toast({ title: "Event updated", status: "success" });
               }}
-              onClose={onClose}
+              onClose={onEditClose}
               categories={categories}
             />
           </ModalBody>
         </ModalContent>
       </Modal>
-      <Button size="sm" m="1" colorScheme="red">
+
+      <Button onClick={onDeleteOpen} size="sm" m="1" colorScheme="red">
         Delete
       </Button>
+      <AlertDialog
+        leastDestructiveRef={cancelRef}
+        onClose={onDeleteClose}
+        isOpen={isDeleteOpen}
+        isCentered
+      >
+        <AlertDialogOverlay />
+        <AlertDialogContent>
+          <AlertDialogHeader>Are you sure?</AlertDialogHeader>
+          <AlertDialogCloseButton />
+          <AlertDialogBody>
+            This action cannot be undone. This will permanently delete the event
+            and remove its data from our system.
+          </AlertDialogBody>
+          <AlertDialogFooter>
+            <Button ref={cancelRef} onClick={onDeleteClose}>
+              Cancel
+            </Button>
+            <Button onClick={handleDelete} colorScheme="red" ml={3}>
+              Delete
+            </Button>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </Box>
   );
 };
