@@ -134,16 +134,6 @@
       "location": "Downtown Bowling Alley",
       "startTime": "2023-03-19T18:00:00.000Z",
       "endTime": "2023-03-19T21:00:00.000Z"
-    },
-    {
-      "title": "Dinner Party",
-      "description": "Homecooked meals",
-      "startTime": "TBD",
-      "endTime": "TBD",
-      "categoryIds": [
-        3
-      ],
-      "id": 10
     }
   ],
   "categories": [

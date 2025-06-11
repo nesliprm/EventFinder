@@ -6,6 +6,7 @@ import {
   Image,
   Text,
   Button,
+  HStack,
   Modal,
   ModalOverlay,
   ModalContent,
@@ -99,19 +100,76 @@ export const EventPage = () => {
   };
 
   return (
-    <Box>
-      <Heading>{event.title}</Heading>
+    <Box maxW="container.lg" mx="auto" p={4}>
+      <HStack gap={2} mt={10} mb={5}>
+        <Heading fontSize="5xl">Event: {event.title}</Heading>
+        <Box role="buttons-group">
+          <Button onClick={onEditOpen} size="xs" m="1">
+            Edit
+          </Button>
+          <Modal isOpen={isEditOpen} onClose={onEditClose} isCentered>
+            <ModalOverlay />
+            <ModalContent>
+              <ModalHeader>Edit event:</ModalHeader>
+              <ModalCloseButton />
+              <ModalBody>
+                <AddEventForm
+                  event={event}
+                  onSubmit={(updatedEvent) => {
+                    setEvent(updatedEvent);
+                    toast({ title: "Event updated", status: "success" });
+                  }}
+                  onClose={onEditClose}
+                  categories={categories}
+                />
+              </ModalBody>
+            </ModalContent>
+          </Modal>
+
+          <Button onClick={onDeleteOpen} size="xs" m="1" colorScheme="red">
+            Delete
+          </Button>
+          <AlertDialog
+            leastDestructiveRef={cancelRef}
+            onClose={onDeleteClose}
+            isOpen={isDeleteOpen}
+            isCentered
+          >
+            <AlertDialogOverlay />
+            <AlertDialogContent>
+              <AlertDialogHeader>Are you sure?</AlertDialogHeader>
+              <AlertDialogCloseButton />
+              <AlertDialogBody>
+                This action cannot be undone. This will permanently delete the
+                event and remove its data from our system.
+              </AlertDialogBody>
+              <AlertDialogFooter>
+                <Button ref={cancelRef} onClick={onDeleteClose}>
+                  Cancel
+                </Button>
+                <Button onClick={handleDelete} colorScheme="red" ml={3}>
+                  Delete
+                </Button>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
+        </Box>
+      </HStack>
+
       {creator?.name ? (
-        <Box>
-          <Text>Created by {creator.name}</Text>{" "}
+        <HStack align="center" mb={5}>
+          <Text>
+            Created by <Text as="b">{creator.name}</Text>
+          </Text>
+
           <Image
             src={creator.image}
             alt={creator.name}
-            boxSize="100px"
+            boxSize="50px"
             objectFit="cover"
             borderRadius="full"
           />
-        </Box>
+        </HStack>
       ) : (
         "Unknown creator"
       )}
@@ -142,61 +200,8 @@ export const EventPage = () => {
       <Text fontSize="sm">
         Ends: {new Date(event.endTime).toLocaleString()}
       </Text>
-      {categoryNames.map((name) => (
-        <Text fontSize="sm" key={name}>
-          Categories: {name}
-        </Text>
-      ))}
 
-      <Button onClick={onEditOpen} size="sm" m="1">
-        Edit
-      </Button>
-      <Modal isOpen={isEditOpen} onClose={onEditClose} isCentered>
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>Edit event:</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>
-            <AddEventForm
-              event={event}
-              onSubmit={(updatedEvent) => {
-                setEvent(updatedEvent);
-                toast({ title: "Event updated", status: "success" });
-              }}
-              onClose={onEditClose}
-              categories={categories}
-            />
-          </ModalBody>
-        </ModalContent>
-      </Modal>
-
-      <Button onClick={onDeleteOpen} size="sm" m="1" colorScheme="red">
-        Delete
-      </Button>
-      <AlertDialog
-        leastDestructiveRef={cancelRef}
-        onClose={onDeleteClose}
-        isOpen={isDeleteOpen}
-        isCentered
-      >
-        <AlertDialogOverlay />
-        <AlertDialogContent>
-          <AlertDialogHeader>Are you sure?</AlertDialogHeader>
-          <AlertDialogCloseButton />
-          <AlertDialogBody>
-            This action cannot be undone. This will permanently delete the event
-            and remove its data from our system.
-          </AlertDialogBody>
-          <AlertDialogFooter>
-            <Button ref={cancelRef} onClick={onDeleteClose}>
-              Cancel
-            </Button>
-            <Button onClick={handleDelete} colorScheme="red" ml={3}>
-              Delete
-            </Button>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+      <Text fontSize="sm">Categories: {categoryNames.join(", ")}</Text>
     </Box>
   );
 };

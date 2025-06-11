@@ -128,7 +128,7 @@ export const EventsPage = () => {
             >
               <Stack
                 display="flex"
-                irection="column"
+                direction="column"
                 p={6}
                 flex="1"
                 justify="space-between"
