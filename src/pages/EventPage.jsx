@@ -1,12 +1,29 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { Box, Heading, Image, Text, Button } from "@chakra-ui/react";
+import {
+  Box,
+  Heading,
+  Image,
+  Text,
+  Button,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalCloseButton,
+  useDisclosure,
+  useToast,
+} from "@chakra-ui/react";
+import { AddEventForm } from "./AddEventForm";
 
 export const EventPage = () => {
   const { eventId } = useParams();
   const [event, setEvent] = useState(null);
   const [creator, setCreator] = useState(null);
   const [categories, setCategories] = useState([]);
+  const { isOpen, onClose, onOpen } = useDisclosure();
+  const toast = useToast();
 
   useEffect(() => {
     async function loadEvent() {
@@ -85,9 +102,27 @@ export const EventPage = () => {
         </Text>
       ))}
 
-      <Button size="sm" m="1">
+      <Button onClick={onOpen} size="sm" m="1">
         Edit
       </Button>
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Edit event:</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <AddEventForm
+              event={event}
+              onSubmit={(updatedEvent) => {
+                setEvent(updatedEvent);
+                toast({ title: "Event updated", status: "success" });
+              }}
+              onClose={onClose}
+              categories={categories}
+            />
+          </ModalBody>
+        </ModalContent>
+      </Modal>
       <Button size="sm" m="1" colorScheme="red">
         Delete
       </Button>

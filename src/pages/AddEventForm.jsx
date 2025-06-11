@@ -8,22 +8,29 @@ import {
 import { useState } from "react";
 
 export const AddEventForm = ({ event, onClose, categories, onSubmit }) => {
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [startTime, setStartTime] = useState("");
-  const [endTime, setEndTime] = useState("");
-  const [categoryIds, setCategoryIds] = useState([]);
+  const [title, setTitle] = useState(event?.title || "");
+  const [description, setDescription] = useState(event?.description || "");
+  const [startTime, setStartTime] = useState(event?.startTime || "");
+  const [endTime, setEndTime] = useState(event?.endTime || "");
+  const [categoryIds, setCategoryIds] = useState(event?.categoryIds || []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const data = { title, description, startTime, endTime, categoryIds };
-    const response = await fetch("http://localhost:3000/events", {
-      method: "POST",
+
+    const url = event
+      ? `http://localhost:3000/events/${event.id}`
+      : "http://localhost:3000/events";
+
+    const method = event ? "PUT" : "POST";
+
+    const response = await fetch(url, {
+      method,
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
     });
-    const newEvent = await response.json();
-    onSubmit(newEvent);
+    const resultEvent = await response.json();
+    onSubmit(resultEvent);
     onClose();
   };
 
