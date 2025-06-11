@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import {
   Box,
   Heading,
   Image,
   Text,
   Button,
+  Stack,
   HStack,
+  Card,
   Modal,
   ModalOverlay,
   ModalContent,
@@ -101,7 +103,7 @@ export const EventPage = () => {
 
   return (
     <Box maxW="container.lg" mx="auto" p={4}>
-      <HStack gap={2} mt={10} mb={5}>
+      <HStack gap={2} my={10}>
         <Heading fontSize="5xl">Event: {event.title}</Heading>
         <Box role="buttons-group">
           <Button onClick={onEditOpen} size="xs" m="1">
@@ -155,53 +157,91 @@ export const EventPage = () => {
           </AlertDialog>
         </Box>
       </HStack>
+      <Card
+        variant="unstyled"
+        direction={{ base: "column", sm: "row" }}
+        overflow="hidden"
+      >
+        <Stack
+          display="flex"
+          direction="column"
+          flex="1"
+          justify="space-between"
+        >
+          {creator?.name ? (
+            <HStack align="center">
+              <Text>
+                Created by <Text as="b">{creator.name}</Text>
+              </Text>
 
-      {creator?.name ? (
-        <HStack align="center" mb={5}>
-          <Text>
-            Created by <Text as="b">{creator.name}</Text>
-          </Text>
+              <Image
+                src={creator.image}
+                alt={creator.name}
+                boxSize="50px"
+                objectFit="cover"
+                borderRadius="full"
+              />
+            </HStack>
+          ) : (
+            "Unknown creator"
+          )}
 
+          <Box role="time-group">
+            <Text fontSize="sm">
+              Starts:{" "}
+              {new Date(event.startTime).toLocaleString("en-GB", {
+                dateStyle: "medium",
+                timeStyle: "short",
+              })}
+            </Text>
+            <Text fontSize="sm">
+              Ends:{" "}
+              {new Date(event.endTime).toLocaleString("en-GB", {
+                dateStyle: "medium",
+                timeStyle: "short",
+              })}
+            </Text>
+          </Box>
+          <Box role="description-group">
+            <Text as="b">{event.description}</Text>
+            <Text>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec
+              ornare ex at orci dapibus lacinia. Aenean nec lacinia est, at
+              rhoncus lorem. Vestibulum et sapien pellentesque, eleifend tortor
+              ac, aliquet urna. Nullam pellentesque suscipit posuere. Etiam
+              posuere eleifend lorem auctor pretium. Proin vitae lectus velit.
+              Aenean mattis suscipit turpis in facilisis. Duis nisi orci,
+              tincidunt eget augue at, lobortis pulvinar dui. Mauris facilisis
+              volutpat vestibulum.
+            </Text>
+          </Box>
+
+          <Text fontSize="sm">Categories: {categoryNames.join(", ")}</Text>
+        </Stack>
+
+        {event.image ? (
           <Image
-            src={creator.image}
-            alt={creator.name}
-            boxSize="50px"
+            src={event.image}
+            alt={event.description}
+            boxSize="md"
             objectFit="cover"
-            borderRadius="full"
+            borderRadius="20"
+            p="2"
           />
-        </HStack>
-      ) : (
-        "Unknown creator"
-      )}
-
-      {event.image ? (
-        <Image
-          src={event.image}
-          alt={event.description}
-          boxSize="md"
-          objectFit="cover"
-          borderRadius="20"
-          p="2"
-        />
-      ) : (
-        <Image
-          src={mockImage}
-          alt={event.description}
-          boxSize="md"
-          objectFit="cover"
-          borderRadius="20"
-          p="2"
-        />
-      )}
-      <Text>{event.description}</Text>
-      <Text fontSize="sm">
-        Starts: {new Date(event.startTime).toLocaleString()}
-      </Text>
-      <Text fontSize="sm">
-        Ends: {new Date(event.endTime).toLocaleString()}
-      </Text>
-
-      <Text fontSize="sm">Categories: {categoryNames.join(", ")}</Text>
+        ) : (
+          <Image
+            src={mockImage}
+            alt={event.description}
+            boxSize="md"
+            objectFit="cover"
+            borderRadius="20"
+            p="2"
+          />
+        )}
+      </Card>
+      <Box fontSize="sm" color="gray.500">
+        <Link to="/">↰ Back to events list</Link>
+      </Box>
     </Box>
   );
 };

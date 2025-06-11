@@ -105,8 +105,14 @@ export const EventsPage = () => {
 
       <Box my={10} display="grid" gap={6}>
         {filteredEvents.map((event) => {
-          const start = new Date(event.startTime).toLocaleString();
-          const end = new Date(event.endTime).toLocaleString();
+          const start = new Date(event.startTime).toLocaleString("en-GB", {
+            dateStyle: "medium",
+            timeStyle: "short",
+          });
+          const end = new Date(event.endTime).toLocaleString("en-GB", {
+            dateStyle: "medium",
+            timeStyle: "short",
+          });
 
           const categoryNames = event.categoryIds.map((id) => {
             const match = categories.find((category) => category.id === id);

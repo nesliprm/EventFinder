@@ -8,14 +8,18 @@ export const Header = () => {
       bgSize="cover"
       bgPosition="center"
       bgRepeat="no-repeat"
-      h="300px"
+      h={{ base: "150px", md: "300px" }}
       display="flex"
       alignItems="center"
       justifyContent="center"
       color="white"
       textAlign="center"
     >
-      <Heading fontFamily="Monoton" fontWeight="normal" fontSize="8xl">
+      <Heading
+        fontFamily="Monoton"
+        fontWeight="normal"
+        fontSize={{ base: "4xl", md: "6xl" }}
+      >
         EventFinder
       </Heading>
     </Box>
