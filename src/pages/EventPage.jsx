@@ -3,7 +3,6 @@ import { useParams, useNavigate, Link } from "react-router-dom";
 import {
   Box,
   Heading,
-  Center,
   Image,
   Text,
   Button,
@@ -26,7 +25,7 @@ import {
   AlertDialogBody,
   AlertDialogFooter,
 } from "@chakra-ui/react";
-import { AddEventForm } from "./AddEventForm";
+import { AddEventForm } from "../components/AddEventForm";
 import mockImage from "../assets/mockeventimage.jpg";
 
 export const EventPage = () => {
@@ -68,14 +67,18 @@ export const EventPage = () => {
   }, [eventId]);
 
   useEffect(() => {
-    if (!event) return;
     async function loadCreator() {
-      const response = await fetch(
-        `http://localhost:3000/users/${event.createdBy}`
-      );
-      const data = await response.json();
-      setCreator(data);
+      if (typeof event.createdBy === "number") {
+        const response = await fetch(
+          `http://localhost:3000/users/${event.createdBy}`
+        );
+        const data = await response.json();
+        setCreator(data);
+      } else if (typeof event.createdBy === "string") {
+        setCreator({ name: event.createdBy });
+      }
     }
+
     loadCreator();
   }, [event]);
 
@@ -115,6 +118,9 @@ export const EventPage = () => {
           Event: {event.title}
         </Heading>
         <Box role="buttons-group">
+          <Button size="xs" m="1">
+            <Link to="/">Back to list</Link>
+          </Button>
           <Button onClick={onEditOpen} size="xs" m="1">
             Edit
           </Button>
@@ -178,51 +184,45 @@ export const EventPage = () => {
           flex="1"
           justify="space-between"
         >
-          {creator?.name ? (
-            <HStack align="center">
-              <Text fontSize={{ base: "xs", md: "md" }}>
-                Created by <Text as="b">{creator.name}</Text>
+          <Box>
+            {creator?.name ? (
+              <HStack align="center">
+                <Text fontSize={{ base: "xs", md: "md" }}>
+                  Created by <Text as="b">{creator.name}</Text>
+                </Text>
+
+                <Image
+                  src={creator.image || mockImage}
+                  alt={creator.name}
+                  boxSize="50px"
+                  objectFit="cover"
+                  borderRadius="full"
+                />
+              </HStack>
+            ) : (
+              <Text fontSize="sm" fontStyle="italic">
+                Creator unknown
               </Text>
+            )}
 
-              <Image
-                src={creator.image}
-                alt={creator.name}
-                boxSize="50px"
-                objectFit="cover"
-                borderRadius="full"
-              />
-            </HStack>
-          ) : (
-            <Text fontSize="sm" fontStyle="italic">
-              Creator unknown
-            </Text>
-          )}
+            <Box role="time-group">
+              <Text fontSize="sm">
+                Starts:{" "}
+                {new Date(event.startTime).toLocaleString("en-GB", {
+                  dateStyle: "medium",
+                  timeStyle: "short",
+                })}
+              </Text>
+              <Text fontSize="sm">
+                Ends:{" "}
+                {new Date(event.endTime).toLocaleString("en-GB", {
+                  dateStyle: "medium",
+                  timeStyle: "short",
+                })}
+              </Text>
+            </Box>
 
-          <Box role="time-group">
-            <Text fontSize="sm">
-              Starts:{" "}
-              {new Date(event.startTime).toLocaleString("en-GB", {
-                dateStyle: "medium",
-                timeStyle: "short",
-              })}
-            </Text>
-            <Text fontSize="sm">
-              Ends:{" "}
-              {new Date(event.endTime).toLocaleString("en-GB", {
-                dateStyle: "medium",
-                timeStyle: "short",
-              })}
-            </Text>
-          </Box>
-          <Box role="description-group">
-            <Text as="b">{event.description}</Text>
-            <Text>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec
-              ornare ex at orci dapibus lacinia. Aenean nec lacinia est, at
-              rhoncus lorem. Vestibulum et sapien pellentesque, eleifend tortor
-              ac, aliquet urna. Nullam pellentesque suscipit posuere. Etiam
-              posuere eleifend lorem auctor pretium.
-            </Text>
+            <Text py={10}>{event.description}</Text>
           </Box>
 
           <Text fontSize="sm">Categories: {categoryNames.join(", ")}</Text>
@@ -250,11 +250,6 @@ export const EventPage = () => {
           />
         )}
       </Card>
-      <Center my={10}>
-        <Button size="sm">
-          <Link to="/">↰ Back to events list</Link>
-        </Button>
-      </Center>
     </Box>
   );
 };

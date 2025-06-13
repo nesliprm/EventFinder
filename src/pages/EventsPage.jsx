@@ -18,7 +18,7 @@ import {
   Stack,
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
-import { AddEventForm } from "./AddEventForm";
+import { AddEventForm } from "../components/AddEventForm";
 import { useSearch } from "./SearchContext";
 import mockImage from "../assets/mockeventimage.jpg";
 import { ScrollTopButton } from "../components/ScrollTopButton";
@@ -111,86 +111,92 @@ export const EventsPage = () => {
       </Modal>
 
       <Box my={10} display="grid" gap={6}>
-        {filteredEvents.map((event) => {
-          const start = new Date(event.startTime).toLocaleString("en-GB", {
-            dateStyle: "medium",
-            timeStyle: "short",
-          });
-          const end = new Date(event.endTime).toLocaleString("en-GB", {
-            dateStyle: "medium",
-            timeStyle: "short",
-          });
+        {filteredEvents.length === 0 ? (
+          <Text>No events found.</Text>
+        ) : (
+          filteredEvents.map((event) => {
+            const start = new Date(event.startTime).toLocaleString("en-GB", {
+              dateStyle: "medium",
+              timeStyle: "short",
+            });
+            const end = new Date(event.endTime).toLocaleString("en-GB", {
+              dateStyle: "medium",
+              timeStyle: "short",
+            });
 
-          const categoryNames = event.categoryIds.map((id) => {
-            const match = categories.find((category) => category.id === id);
-            return match ? match.name : "Uncategorized";
-          });
+            const categoryNames = event.categoryIds.map((id) => {
+              const match = categories.find((category) => category.id === id);
+              return match ? match.name : "Uncategorized";
+            });
 
-          return (
-            <Card
-              key={event.id}
-              direction={{ base: "column", sm: "row" }}
-              overflow="hidden"
-              variant="outline"
-              borderRadius="20"
-              _hover={{
-                boxShadow: "md",
-                transform: "translate(-1px)",
-                transition: "all 0.1s ease-in-out",
-              }}
-            >
-              <Stack
-                display="flex"
-                direction="column"
-                p={6}
-                flex="1"
-                justify="space-between"
-              >
-                <Box>
-                  <Link to={`/event/${event.id}`}>
-                    <Heading as="b" fontSize="3xl">
-                      {event.title}
-                    </Heading>
-                  </Link>
-                  <Text py="2" fontSize="md">
-                    {event.description}
-                  </Text>
-                </Box>
-                <Box>
-                  <Text fontSize="sm">Starts: {start}</Text>
-                  <Text fontSize="sm">Ends: {end}</Text>
-                  <Text fontSize="sm">
-                    Categories: {categoryNames.join(", ")}
-                  </Text>
-                </Box>
-              </Stack>
+            return (
+              <Link key={event.id} to={`/event/${event.id}`}>
+                {" "}
+                <Card
+                  key={event.id}
+                  direction={{ base: "column", sm: "row" }}
+                  overflow="hidden"
+                  variant="outline"
+                  borderRadius="20"
+                  _hover={{
+                    boxShadow: "md",
+                    transform: "translate(-1px)",
+                    transition: "all 0.1s ease-in-out",
+                  }}
+                >
+                  <Stack
+                    display="flex"
+                    direction="column"
+                    p={6}
+                    flex="1"
+                    justify="space-between"
+                  >
+                    <Box>
+                      <Heading as="b" fontSize="3xl">
+                        {event.title}
+                      </Heading>
 
-              {event.image ? (
-                <Image
-                  src={event.image}
-                  alt={event.description}
-                  w={{ base: "100%", sm: "xs" }}
-                  maxH={{ base: "200px", sm: "100%" }}
-                  boxSize={{ sm: "xs" }}
-                  objectFit="cover"
-                  alignSelf="stretch"
-                />
-              ) : (
-                <Image
-                  src={mockImage}
-                  alt={event.description}
-                  w={{ base: "100%", sm: "xs" }}
-                  maxH={{ base: "200px", sm: "100%" }}
-                  boxSize={{ sm: "xs" }}
-                  objectFit="cover"
-                  alignSelf="stretch"
-                />
-              )}
-            </Card>
-          );
-        })}
+                      <Text py="2" fontSize="md">
+                        {event.description}
+                      </Text>
+                    </Box>
+                    <Box>
+                      <Text fontSize="sm">Starts: {start}</Text>
+                      <Text fontSize="sm">Ends: {end}</Text>
+                      <Text fontSize="sm">
+                        Categories: {categoryNames.join(", ")}
+                      </Text>
+                    </Box>
+                  </Stack>
+
+                  {event.image ? (
+                    <Image
+                      src={event.image}
+                      alt={event.description}
+                      w={{ base: "100%", sm: "xs" }}
+                      maxH={{ base: "200px", sm: "100%" }}
+                      boxSize={{ sm: "xs" }}
+                      objectFit="cover"
+                      alignSelf="stretch"
+                    />
+                  ) : (
+                    <Image
+                      src={mockImage}
+                      alt={event.description}
+                      w={{ base: "100%", sm: "xs" }}
+                      maxH={{ base: "200px", sm: "100%" }}
+                      boxSize={{ sm: "xs" }}
+                      objectFit="cover"
+                      alignSelf="stretch"
+                    />
+                  )}
+                </Card>
+              </Link>
+            );
+          })
+        )}
       </Box>
-      <ScrollTopButton />
+      <Box>{filteredEvents.length === 0 ? "" : <ScrollTopButton />}</Box>
     </Box>
   );
 };

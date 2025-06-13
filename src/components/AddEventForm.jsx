@@ -9,6 +9,7 @@ import { useState } from "react";
 
 export const AddEventForm = ({ event, onClose, categories, onSubmit }) => {
   const [title, setTitle] = useState(event?.title || "");
+  const [createdBy, setCreatedBy] = useState(event?.createdBy || "");
   const [description, setDescription] = useState(event?.description || "");
   const [startTime, setStartTime] = useState(event?.startTime || "");
   const [endTime, setEndTime] = useState(event?.endTime || "");
@@ -16,7 +17,14 @@ export const AddEventForm = ({ event, onClose, categories, onSubmit }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const data = { title, description, startTime, endTime, categoryIds };
+    const data = {
+      title,
+      createdBy,
+      description,
+      startTime,
+      endTime,
+      categoryIds,
+    };
 
     const url = event
       ? `http://localhost:3000/events/${event.id}`
@@ -44,6 +52,14 @@ export const AddEventForm = ({ event, onClose, categories, onSubmit }) => {
           onChange={(e) => setTitle(e.target.value)}
           required
         />
+
+        <FormLabel mt={3}>Creator</FormLabel>
+        <Input
+          type="text"
+          value={createdBy}
+          onChange={(e) => setCreatedBy(e.target.value)}
+        />
+
         <FormLabel mt={3}>Description</FormLabel>
         <Input
           type="text"
@@ -53,21 +69,21 @@ export const AddEventForm = ({ event, onClose, categories, onSubmit }) => {
         />
         <FormLabel mt={3}>Starts</FormLabel>
         <Input
-          type="text"
+          type="datetime-local"
           value={startTime}
           onChange={(e) => setStartTime(e.target.value)}
           required
         />
         <FormLabel mt={3}>Ends</FormLabel>
         <Input
-          type="text"
+          type="datetime-local"
           value={endTime}
           onChange={(e) => setEndTime(e.target.value)}
           required
         />
         <FormLabel mt={3}>Category</FormLabel>
         <Select
-          value={categoryIds}
+          value={categoryIds[0] || ""}
           onChange={(e) => setCategoryIds([Number(e.target.value)])}
         >
           {categories.map((category) => (
