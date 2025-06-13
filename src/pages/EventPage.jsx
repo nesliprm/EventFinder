@@ -68,6 +68,7 @@ export const EventPage = () => {
 
   useEffect(() => {
     async function loadCreator() {
+      if (!event) return;
       if (typeof event.createdBy === "number") {
         const response = await fetch(
           `http://localhost:3000/users/${event.createdBy}`
