@@ -22,7 +22,7 @@ export const Header = () => {
           fontWeight="normal"
           fontSize={{ base: "4xl", md: "6xl" }}
         >
-          EventFinder
+          Eventinder
         </Heading>
       </Box>
     </Link>
